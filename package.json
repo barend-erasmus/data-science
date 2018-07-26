@@ -1,0 +1,22 @@
+{
+  "name": "data-science",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barend-erasmus/data-science.git"
+  },
+  "author": "Barend Erasmus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/barend-erasmus/data-science/issues"
+  },
+  "homepage": "https://github.com/barend-erasmus/data-science#readme",
+  "dependencies": {
+    "stats-lite": "^2.1.1"
+  }
+}
