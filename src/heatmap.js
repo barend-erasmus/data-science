@@ -48,19 +48,19 @@ const { SVGElement } = require("./svg-element");
 
   const heatmapMatrix = [];
 
-  for (let x = 0; x < matrix.length; x++) {
+  for (let x = 0; x < maximiumX; x++) {
     if (!matrix[x]) {
-      continue;
+      matrix[x] = [];
     }
 
-    for (let y = 0; y < matrix[x].length; y++) {
+    for (let y = 0; y < maximiumY; y++) {
       if (!matrix[x][y]) {
-        continue;
+        matrix[x][y] = [];
       }
 
       const values = matrix[x][y];
 
-      const value = statsLite.median(values);
+      const value = values.length ? statsLite.mean(values) : 0;
 
       heatmapMatrix.push([x, y, value]);
     }

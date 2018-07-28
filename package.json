@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc & node ./dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/barend-erasmus/data-science#readme",
   "dependencies": {
-    "stats-lite": "^2.1.1"
+    "node-sass": "^4.9.2",
+    "stats-lite": "^2.1.1",
+    "ws": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.3",
+    "prettier": "^1.13.7"
   }
 }

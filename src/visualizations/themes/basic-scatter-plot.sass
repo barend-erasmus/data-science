@@ -1,0 +1,32 @@
+$primary-color: #0A2342;
+$secondary-color: #087E8B;
+
+$tertiary-color: #EC4E20;
+$quaternary-color: #016FB9;
+$quinary-color: #413F54;
+
+svg {
+    g#legend {
+        line.x-axis {
+            stroke: $primary-color;
+            stroke-width: 2;
+        }
+
+        line.y-axis {
+            stroke: $primary-color;
+            stroke-width: 2;
+        }
+
+        g#legend-ticks line.tick {
+            stroke: $primary-color;
+            stroke-width: 2;
+        }
+    }
+
+    g#scatter-plot {
+        circle.point {
+            fill: $secondary-color;
+            r: 2;
+        }
+    }
+}
