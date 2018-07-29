@@ -112,15 +112,46 @@ export class ScatterPlot {
 
     // Draw Ticks
     const tickLength: number = 10;
+
+    const numberOfXTicks: number = 10;
     const numberOfYTicks: number = 10;
 
-    const legendTicksElement: SVGElement = legendElement
+    const legendXTicksElement: SVGElement = legendElement
       .append('g')
-      .attr('id', 'legend-ticks')
+      .attr('id', 'legend-x-ticks')
+      .attr('transform', `translate(${0}, ${tickLength})`);
+
+    const legendYTicksElement: SVGElement = legendElement
+      .append('g')
+      .attr('id', 'legend-y-ticks')
       .attr('transform', `translate(${-tickLength}, ${0})`);
 
+    for (let value = this.xMinimum; value <= this.xMaximum; value += (this.xMaximum - this.xMinimum) / numberOfXTicks) {
+      legendXTicksElement
+        .append('line')
+        .attr(
+          'x1',
+          this.transformX(
+            (Math.ceil(value) - this.xMinimum) * this.xPixelsPerUnit,
+            this.scatterPlotHeight,
+            this.scatterPlotWidth,
+          ),
+        )
+        .attr('y1', this.transformY(0, this.scatterPlotHeight, this.scatterPlotWidth))
+        .attr(
+          'x2',
+          this.transformX(
+            (Math.ceil(value) - this.xMinimum) * this.xPixelsPerUnit,
+            this.scatterPlotHeight,
+            this.scatterPlotWidth,
+          ),
+        )
+        .attr('y2', this.transformY(10, this.scatterPlotHeight, this.scatterPlotWidth))
+        .attr('class', `tick ${value}`);
+    }
+
     for (let value = this.yMinimum; value <= this.yMaximum; value += (this.yMaximum - this.yMinimum) / numberOfYTicks) {
-      legendTicksElement
+      legendYTicksElement
         .append('line')
         .attr('x1', this.transformX(0, this.scatterPlotHeight, this.scatterPlotWidth))
         .attr(
@@ -140,7 +171,7 @@ export class ScatterPlot {
             this.scatterPlotWidth,
           ),
         )
-        .attr('class', `tick ${value}`);
+        .attr('class', `tick`);
     }
   }
 
