@@ -14,9 +14,9 @@ export class ScatterPlot {
 
   protected svgElement: SVGElement = null;
 
-  protected xAxis: Array<number> = [];
+  protected xAxes: Array<Array<number>> = [];
 
-  protected yAxis: Array<number> = [];
+  protected yAxes: Array<Array<number>> = [];
 
   protected xMinimum: number = null;
 
@@ -40,16 +40,16 @@ export class ScatterPlot {
     this.yPixelsPerUnit = this.scatterPlotHeight / (this.yMaximum - this.yMinimum);
   }
 
-  public setData(xAxis: Array<number>, yAxis: Array<number>): ScatterPlot {
-    this.xAxis = xAxis;
+  public setData(xAxes: Array<Array<number>>, yAxes: Array<Array<number>>): ScatterPlot {
+    this.xAxes = xAxes;
 
-    this.yAxis = yAxis;
+    this.yAxes = yAxes;
 
-    this.xMinimum = Math.min(...this.xAxis);
-    this.xMaximum = Math.max(...this.xAxis);
+    this.xMinimum = Math.min(...this.xAxes.map((xAxis: Array<number>) => Math.min(...xAxis)));
+    this.xMaximum = Math.max(...this.xAxes.map((xAxis: Array<number>) => Math.max(...xAxis)));
 
-    this.yMinimum = Math.min(...this.yAxis);
-    this.yMaximum = Math.max(...this.yAxis);
+    this.yMinimum = Math.min(...this.yAxes.map((yAxis: Array<number>) => Math.min(...yAxis)));
+    this.yMaximum = Math.max(...this.yAxes.map((yAxis: Array<number>) => Math.max(...yAxis)));
 
     this.xPixelsPerUnit = this.scatterPlotWidth / (this.xMaximum - this.xMinimum);
 
@@ -59,11 +59,11 @@ export class ScatterPlot {
   }
 
   public setMinimumAndMaximum(xMinimum: number, xMaximum: number, yMinimum: number, yMaximum: number): ScatterPlot {
-    this.xMinimum = xMinimum;
-    this.xMaximum = xMaximum;
+    this.xMinimum = xMinimum !== null ? xMinimum : this.xMinimum;
+    this.xMaximum = xMaximum !== null ? xMaximum : this.xMaximum;
 
-    this.yMinimum = yMinimum;
-    this.yMaximum = yMaximum;
+    this.yMinimum = yMinimum !== null ? yMinimum : this.yMinimum;
+    this.yMaximum = yMaximum !== null ? yMaximum : this.yMaximum;
 
     this.xPixelsPerUnit = this.scatterPlotWidth / (this.xMaximum - this.xMinimum);
 
@@ -150,26 +150,31 @@ export class ScatterPlot {
       .attr('id', 'scatter-plot')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    for (let index = 0; index < this.xAxis.length; index++) {
-      scatterPlotElement
-        .append('circle')
-        .attr(
-          'cx',
-          this.transformX(
-            (this.xAxis[index] - this.xMinimum) * this.xPixelsPerUnit,
-            this.scatterPlotHeight,
-            this.scatterPlotWidth,
-          ),
-        )
-        .attr(
-          'cy',
-          this.transformY(
-            (this.yAxis[index] - this.yMinimum) * this.yPixelsPerUnit,
-            this.scatterPlotHeight,
-            this.scatterPlotWidth,
-          ),
-        )
-        .attr('class', 'point');
+    for (let axisIndex = 0; axisIndex < this.xAxes.length; axisIndex++) {
+      const xAxis: Array<number> = this.xAxes[axisIndex];
+      const yAxis: Array<number> = this.yAxes[axisIndex];
+
+      for (let index = 0; index < xAxis.length; index++) {
+        scatterPlotElement
+          .append('circle')
+          .attr(
+            'cx',
+            this.transformX(
+              (xAxis[index] - this.xMinimum) * this.xPixelsPerUnit,
+              this.scatterPlotHeight,
+              this.scatterPlotWidth,
+            ),
+          )
+          .attr(
+            'cy',
+            this.transformY(
+              (yAxis[index] - this.yMinimum) * this.yPixelsPerUnit,
+              this.scatterPlotHeight,
+              this.scatterPlotWidth,
+            ),
+          )
+          .attr('class', `point axis-${axisIndex + 1}`);
+      }
     }
   }
 

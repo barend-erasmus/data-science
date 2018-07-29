@@ -7,7 +7,7 @@ export class Parser {
   public async fromCSV(): Promise<any[]> {
     const contents: string = await fs.promises.readFile(path.join('./files', this.filename), 'utf8');
 
-    const lines: string[] = contents.split('\n');
+    const lines: string[] = contents.split('\r\n');
 
     const headerColumns: string[] = this.splitCSVLineToColumns(lines[0]);
 
@@ -70,7 +70,7 @@ export class Parser {
 
       temp += char;
     }
-
+    
     values.push(temp.replace(/'/g, "''"));
 
     return values;
